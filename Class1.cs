@@ -17,18 +17,18 @@ namespace LPLab4
         public override bool Equals(object obj) => iCanDrive == (bool)obj;
         public override string ToString() => iCanDrive ? "I can drive" : "I can't drive";
     }
-    class Print
+    class Print:Vehicle
     {
-        public void IAmPrinting(object print)
+        public override bool ICanRun() => true;
+        public void IAmPrinting(Vehicle print)
         {
-            if(print is Cars)
-                Console.WriteLine("Is Cars");
-            if(print is Transformer)
-                Console.WriteLine("Is Transformer");
-            if (print is Beast)
-                Console.WriteLine("Is Beast");
-            if(print is Print)
-                Console.WriteLine("Is Print");
+            Console.WriteLine();
+            if (print is Cars)
+                Console.WriteLine(print.ToString());
+            if (print is Transformer)
+                Console.WriteLine(print.ToString());
+            if (print is Print)
+                Console.WriteLine(print.ToString());
         }
     }
 }

@@ -343,7 +343,7 @@ namespace LPLab4
 
             if(((IRuning)a).ICanRun()) Console.WriteLine("I can run");
             else Console.WriteLine("I can't run");
-
+            Cars cars = new Cars();
             //"I can run"
             int weightHuman = 54;
             int lifespanHuman = 65;
@@ -369,10 +369,10 @@ namespace LPLab4
             }
             else { Console.WriteLine("human isn't Beast"); }
             Print printing = new Print();
-            object[] arr = {a,human,beast,vehicle ,printing};
-            foreach (var item in arr)
+            object[] arr = {a,cars ,printing};
+            foreach (object item in arr)
             {
-                printing.IAmPrinting(item);
+                printing.IAmPrinting((Vehicle)item);
             }
             //обычный массив в котором находятся все классы( в самом конце Printing)
             Pause();
