@@ -410,6 +410,15 @@ namespace LPLab4
                 Army = value;
             }
         }
+        public void create(Human human)
+        {
+            HumanArmy[0].Iq = human.Iq;
+            HumanArmy[0].Years = human.Years;
+        }
+        public void create(Transformer transformer)
+        {
+            Transformersarmy[0] = transformer;
+        }
         public void AddSoldier(Human human)
         {
             HumanArmy.Add(human);
@@ -473,7 +482,7 @@ namespace LPLab4
             Human human5 = new Human(90, 36); 
             Human human6 = new Human(70, 37);
             littleArmy Army= new littleArmy();
-            Army.AddSoldier(human1);
+            Army.create(human1);
             Army.AddSoldier(human2);
             Army.AddSoldier(human3);
             Army.AddSoldier(human4);
