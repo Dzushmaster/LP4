@@ -29,6 +29,42 @@ using System.Windows.Markup;
 
 namespace LPLab4
 {
+    enum soldier
+    {
+        People, Transformer
+    };
+    struct beries
+    {
+        public beries(int cost,string name)
+        {
+            this.cost = cost;
+            this.name = name;
+        }
+        int cost;
+        public int Cost
+        {
+            get
+            {
+                return cost;
+            }
+            set
+            {
+                cost = value;
+            }
+        }
+        string name;
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                Name = value;
+            }
+        }
+    }
     class Engine
     {
         public Engine() { }
@@ -89,6 +125,10 @@ namespace LPLab4
     abstract class Vehicle
     {
         public abstract bool ICanRun();
+        public virtual void DisplaySpeed()
+        {
+            Console.WriteLine(max_speed);
+        }
         protected Engine vehicle_Engine;
         int max_speed;
         protected int Max_Speed
@@ -133,6 +173,27 @@ namespace LPLab4
             this.vehicle_Engine = vehicle_Engine;
             this.name = name;
             this.typeOfTransformer = typeOfTransformer;
+        }
+        int power;
+        public int Power
+        {
+            get
+            {
+                return power;
+            }
+            set
+            {
+                power = value;
+            }
+        }
+        int yearOfCreate;
+        public int YearOfCreate
+        {
+            get
+            {
+                return yearOfCreate;
+            }
+            set { yearOfCreate = value; }
         }
         string typeOfTransformer;
         public string TypeOfTransformer
@@ -327,6 +388,76 @@ namespace LPLab4
             }
         }
     }
+
+    class littleArmy
+    {
+        protected List<Transformer> Transformersarmy;
+        protected List<Human> HumanArmy;
+        public littleArmy()
+        {
+            List<Transformer> Transformersarmy = new List<Transformer>();
+            List<Human> HumanArmy = new List<Human>();
+        }
+        public static int sizeArmy = 0;
+        public List<littleArmy> Army
+        {
+            get
+            {
+                return Army;
+            }
+            set
+            {
+                Army = value;
+            }
+        }
+        public void AddSoldier(Human human)
+        {
+            HumanArmy.Add(human);
+            sizeArmy++;
+        }
+        public void deleteSoldier(Human human)
+        {
+            HumanArmy.Remove(human);
+            sizeArmy--;
+        }
+        public void AddTransformer(Transformer transformer)
+        {
+            Transformersarmy.Add(transformer);
+            sizeArmy++;
+        }
+        public void deleteTransformer(Transformer transformer)
+        {
+            Transformersarmy.Remove(transformer);
+            sizeArmy--;
+        }
+        public void PrintConsole()
+        {
+            for(int i = 0;i<HumanArmy.Count;i++)
+                Console.WriteLine(HumanArmy[i].Iq +" " + HumanArmy[i].Years);
+        }
+    }
+    class controller:littleArmy
+    {
+        void findYear(int year)
+        {
+            int i = 0;
+            while (HumanArmy != null || HumanArmy[i++].Years != year) ;
+            Console.WriteLine(HumanArmy[i - 1].Years + " " + HumanArmy[i - 1].Iq);
+            i = 0;
+            while (Transformersarmy != null || Transformersarmy[i++].YearOfCreate != year) ; 
+            Console.WriteLine(Transformersarmy[i-1].YearOfCreate + " " + Transformersarmy[i-1].Name + " " + Transformersarmy[i-1].TypeOfTransformer);
+        }
+        void findP(int power)
+        {
+            int i = 0;
+            while (Transformersarmy != null || Transformersarmy[i++].YearOfCreate != power) ;
+            Console.WriteLine(Transformersarmy[i-1].Power + " " + Transformersarmy[i-1].YearOfCreate + " " + Transformersarmy[i-1].Name + " " + Transformersarmy[i-1].TypeOfTransformer);
+        }
+        void SizeArmy()
+        {
+            Console.WriteLine("Размер армии составляет " + littleArmy.sizeArmy + "боевых единиц");
+        }
+    }
     class Program
     {
         static void Pause()
@@ -335,46 +466,21 @@ namespace LPLab4
         }
         static void Main(string[] args)
         {
-            Transformer a = new Transformer();
-            if(a.ICanRun())
-                Console.WriteLine("I can run");
-            else
-                Console.WriteLine("I can't run");
-
-            if(((IRuning)a).ICanRun()) Console.WriteLine("I can run");
-            else Console.WriteLine("I can't run");
-            Cars cars = new Cars();
-            //"I can run"
-            int weightHuman = 54;
-            int lifespanHuman = 65;
-            int iq = 100;
-            int years = 40;
-            Driving drive = new Driving(true);
-            Human human = new Human(iq, years,lifespanHuman,weightHuman,drive);
-            int weight = 72;
-            int lifespan = 100;
-            //Beast beast = new Beast(weight, lifespan);
-            Beast beast = human as Beast;
-            if(beast == null) Console.WriteLine("Beast!=Human");
-            else Console.WriteLine("Beast==Human");
-            Beast beast1 = new Beast(lifespan, weight);
-            Human human1 = beast1 as Human;
-            if (human1 == null) Console.WriteLine("Human!=Beast");
-            else Console.WriteLine("Human == Beast");
-            Engine vehicle = new Engine(350, 720);
-            if(human is Beast)
-            {
-                Beast beast2 = (Beast)human;
-                Console.WriteLine(beast2);
-            }
-            else { Console.WriteLine("human isn't Beast"); }
-            Print printing = new Print();
-            object[] arr = {a,cars ,printing};
-            foreach (object item in arr)
-            {
-                printing.IAmPrinting((Vehicle)item);
-            }
-            //обычный массив в котором находятся все классы( в самом конце Printing)
+            Human human1 = new Human(100,30);
+            Human human2 = new Human(101, 33);
+            Human human3 = new Human(106, 34);
+            Human human4 = new Human(112, 35);
+            Human human5 = new Human(90, 36); 
+            Human human6 = new Human(70, 37);
+            littleArmy Army= new littleArmy();
+            Army.AddSoldier(human1);
+            Army.AddSoldier(human2);
+            Army.AddSoldier(human3);
+            Army.AddSoldier(human4);
+            Army.AddSoldier(human5);
+            Army.AddSoldier(human6);
+            Console.WriteLine("Люди: ");
+            Army.PrintConsole();
             Pause();
         }
     }
