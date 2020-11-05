@@ -31,7 +31,7 @@ namespace LPLab4
 {
     enum soldier
     {
-        People, Transformer
+        People=4, Transformer
     };
     struct beries
     {
@@ -168,11 +168,13 @@ namespace LPLab4
     class Transformer : Vehicle,IRuning
     {
         public Transformer(){        }
-        public Transformer(Engine vehicle_Engine, string name, string typeOfTransformer)
+        public Transformer(Engine vehicle_Engine, string name, string typeOfTransformer,int power, int yearOfCreate)
         {
             this.vehicle_Engine = vehicle_Engine;
             this.name = name;
             this.typeOfTransformer = typeOfTransformer;
+            this.power = power;
+            this.yearOfCreate = yearOfCreate;
         }
         int power;
         public int Power
@@ -223,7 +225,7 @@ namespace LPLab4
         public override bool ICanRun() => true;
         public override string ToString()
         {
-            return "Name of this engine is " + this.name + "\ntypeOfTransformer :" + this.typeOfTransformer+ "\n";
+            return "Name of this engine is " + this.name + " power " + this.power + " year of creating " + this.yearOfCreate;
         }
     }
     class Cars:Vehicle
@@ -389,17 +391,12 @@ namespace LPLab4
         }
     }
 
-    class littleArmy
+    class LittileArmy
     {
-        protected List<Transformer> Transformersarmy;
-        protected List<Human> HumanArmy;
-        public littleArmy()
-        {
-            List<Transformer> Transformersarmy = new List<Transformer>();
-            List<Human> HumanArmy = new List<Human>();
-        }
+        public List<Transformer> Transformersarmy = new List<Transformer>();
+        public List<Human> HumanArmy = new List<Human>();
         public static int sizeArmy = 0;
-        public List<littleArmy> Army
+        public List<LittileArmy> Army
         {
             get
             {
@@ -409,15 +406,6 @@ namespace LPLab4
             {
                 Army = value;
             }
-        }
-        public void create(Human human)
-        {
-            HumanArmy[0].Iq = human.Iq;
-            HumanArmy[0].Years = human.Years;
-        }
-        public void create(Transformer transformer)
-        {
-            Transformersarmy[0] = transformer;
         }
         public void AddSoldier(Human human)
         {
@@ -439,32 +427,55 @@ namespace LPLab4
             Transformersarmy.Remove(transformer);
             sizeArmy--;
         }
-        public void PrintConsole()
+        public void PrintHuman()
         {
             for(int i = 0;i<HumanArmy.Count;i++)
-                Console.WriteLine(HumanArmy[i].Iq +" " + HumanArmy[i].Years);
+                Console.WriteLine(HumanArmy[i]);
+        }
+        public void PrintTransformers()
+        {
+            for (int i = 0; i < Transformersarmy.Count; i++)
+                Console.WriteLine(Transformersarmy[i]);
         }
     }
-    class controller:littleArmy
+    class Controller:LittileArmy
     {
-        void findYear(int year)
+        public void findYear(int year, List<Transformer> Transformersarmy, List<Human> HumanArmy)
         {
             int i = 0;
-            while (HumanArmy != null || HumanArmy[i++].Years != year) ;
-            Console.WriteLine(HumanArmy[i - 1].Years + " " + HumanArmy[i - 1].Iq);
+            while (HumanArmy != null)
+            {
+                Human human = HumanArmy[i];
+                if (human.Years == year)
+                    break;
+                i++;
+            }
+            Console.WriteLine("Первый человек с такой датой рождения найден: "+HumanArmy[i]);
             i = 0;
-            while (Transformersarmy != null || Transformersarmy[i++].YearOfCreate != year) ; 
-            Console.WriteLine(Transformersarmy[i-1].YearOfCreate + " " + Transformersarmy[i-1].Name + " " + Transformersarmy[i-1].TypeOfTransformer);
+            while (Transformersarmy != null)
+            {
+                Transformer transformer = Transformersarmy[i];
+                if (transformer.YearOfCreate == year)
+                    break;
+                i++;
+            }
+            Console.WriteLine("Первый трансформер с таким годом создания найден: "  + Transformersarmy[i]);
         }
-        void findP(int power)
+        public void findP(int power, List<Transformer> Transformersarmy)
         {
             int i = 0;
-            while (Transformersarmy != null || Transformersarmy[i++].YearOfCreate != power) ;
-            Console.WriteLine(Transformersarmy[i-1].Power + " " + Transformersarmy[i-1].YearOfCreate + " " + Transformersarmy[i-1].Name + " " + Transformersarmy[i-1].TypeOfTransformer);
+            while (Transformersarmy != null)
+            {
+                Transformer transformer = Transformersarmy[i];
+                if (transformer.Power == power)
+                    break;
+                i++;
+            }
+            Console.WriteLine("Первый трансформер с такой мощностью найден: " + Transformersarmy[i]);
         }
-        void SizeArmy()
+        public static void SizeArmy()
         {
-            Console.WriteLine("Размер армии составляет " + littleArmy.sizeArmy + "боевых единиц");
+            Console.WriteLine("Размер армии составляет " + LittileArmy.sizeArmy + " боевых единиц");
         }
     }
     class Program
@@ -475,21 +486,42 @@ namespace LPLab4
         }
         static void Main(string[] args)
         {
-            Human human1 = new Human(100,30);
-            Human human2 = new Human(101, 33);
-            Human human3 = new Human(106, 34);
-            Human human4 = new Human(112, 35);
-            Human human5 = new Human(90, 36); 
-            Human human6 = new Human(70, 37);
-            littleArmy Army= new littleArmy();
-            Army.create(human1);
+            Driving driving = new Driving(true);
+            Human human1 = new Human(100,1995,100,70,driving);
+            Human human2 = new Human(101, 1990,120,56,driving);
+            Human human3 = new Human(106, 1970,89,70,driving);
+            Human human4 = new Human(112, 1965,90,80,driving);
+            Human human5 = new Human(90, 1983,76,50,driving); 
+            Human human6 = new Human(70, 1978,77,45,driving);
+            Engine engine = new Engine(780, 1000);
+            Engine engine1 = new Engine(1300, 1450);
+            Transformer transformer1 = new Transformer(engine, "transformer1", "autobot", 750, 300);
+            Transformer transformer2 = new Transformer(engine, "transformer2", "autobot",800,350);
+            Transformer transformer3 = new Transformer(engine1, "transformer3", "autobot",1300,1800);
+            Transformer transformer4 = new Transformer(engine1, "transformer4", "autobot",1500,1965);
+            Transformer transformer5 = new Transformer(engine1, "transformer5", "autobot",800,1900);
+            Transformer transformer6 = new Transformer(engine, "transformer6", "autobot",750,450);
+            LittileArmy Army= new LittileArmy();
+            Army.AddSoldier(human1);
+            Army.AddTransformer(transformer1);
             Army.AddSoldier(human2);
+            Army.AddTransformer(transformer2);
             Army.AddSoldier(human3);
+            Army.AddTransformer(transformer3);
             Army.AddSoldier(human4);
+            Army.AddTransformer(transformer4);
             Army.AddSoldier(human5);
+            Army.AddTransformer(transformer5);
             Army.AddSoldier(human6);
+            Army.AddTransformer(transformer6);
             Console.WriteLine("Люди: ");
-            Army.PrintConsole();
+            Army.PrintHuman();
+            Console.WriteLine("Трансформеры: ");
+            Army.PrintTransformers();
+            Controller.SizeArmy();
+            Controller controller = new Controller();
+            controller.findP(750,Army.Transformersarmy);
+            controller.findYear(1965,Army.Transformersarmy, Army.HumanArmy);
             Pause();
         }
     }
